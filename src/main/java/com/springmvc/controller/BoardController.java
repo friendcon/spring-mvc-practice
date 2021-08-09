@@ -1,6 +1,7 @@
 package com.springmvc.controller;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
 import com.springmvc.service.BoardService;
 import com.sun.javafx.iio.common.SmoothMinifier;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,16 @@ public class BoardController {
     private BoardService service;
 
     // 목록 페이지
-    @GetMapping("/list")
+   /* @GetMapping("/list")
     public void list(Model model){
         log.info("list page. . . . . .");
         model.addAttribute("list", service.getList());
+    }*/
+    
+    @GetMapping("/list")
+    public void list(Criteria cri, Model model) {
+    	log.info("list : " + cri);
+    	model.addAttribute("list", service.getList(cri));
     }
 
     // 등록 페이지

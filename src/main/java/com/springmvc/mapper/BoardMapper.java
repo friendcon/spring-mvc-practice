@@ -1,27 +1,32 @@
 package com.springmvc.mapper;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
+
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 public interface BoardMapper {
     //@Select("select * from tbl_board where bno > 0")
-    // getList() : ê²Œì‹œíŒ ê¸€ ê°€ì ¸ì˜¤ê¸°
+    // getList() : °Ô½Ã±Û ¸ñ·Ï -> ÆäÀÌÂ¡ ÇÊ¿ä
     public List<BoardVO> getList();
+    
+    // ÆäÀÌÁö °¡Á®¿À±â
+    public List<BoardVO> getListWithPaging(Criteria cri);
 
-    // insert ì²˜ë¦¬ë˜ê³  primary key ë¥¼ ì•Œ í•„ìš”ê°€ ì—†ëŠ” ê²½ìš°
+    // °Ô½Ã±Û ÀÛ¼º
     public void insert(BoardVO board);
 
-    // insert ì²˜ë¦¬ë˜ê³  primary key ê°’ì„ ì•Œ í•„ìš”ê°€ ìˆëŠ” ê²½ìš°
+    // °Ô½Ã±Û ÀÛ¼º primary key¸¦ ¹Ì¸® °¡Á®¿Ã ¼ö ÀÖÀ½
     public void insertSelectKey(BoardVO board);
 
-    // ê²Œì‹œê¸€ ì½ê¸°
+    // °Ô½Ã±Û 1°³ ÀĞ±â
     public BoardVO read(Long bno);
 
-    // ê²Œì‹œê¸€ ì‚­ì œ
+    // »èÁ¦
     public int delete(Long bno);
 
-    // ê²Œì‹œê¸€ ìˆ˜ì •
+    // ¼öÁ¤
     public int update(BoardVO board);
 }

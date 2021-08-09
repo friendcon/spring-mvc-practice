@@ -1,8 +1,13 @@
 package com.springmvc.mapper;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
+
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +67,12 @@ public class BoardMapperTests {
 
         int count = mapper.update(board);
         log.info("UPDATE COUNT : " + count);
+    }
+    
+    @Test
+    public void testPaging() {
+    	Criteria cri = new Criteria();
+    	List<BoardVO> list = mapper.getListWithPaging(cri);
+    	list.forEach(board->log.info(board));
     }
 }

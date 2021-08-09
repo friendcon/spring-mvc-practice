@@ -1,6 +1,8 @@
 package com.springmvc.service;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
+
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
@@ -37,12 +39,17 @@ public class BoardServiceTest {
         log.info("생성된 게시물의 번호 : " + board.getBno());
     }
 
-    @Test
+    /*@Test
     public void testGetList(){
         service.getList().forEach(board -> log.info(board));
-    }
+    }*/
 
     @Test
+    public void testGetListWithPaging() {
+    	service.getList(new Criteria(2, 10)).forEach(board -> log.info(board));
+    }
+
+   @Test
     public void testGet(){
         log.info(service.get(4L));
     }

@@ -1,18 +1,22 @@
 package com.springmvc.service;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
 
 import java.util.List;
 
 public interface BoardService {
-    // ê²Œì‹œê¸€ ë“±ë¡
+    // °Ô½Ã±Û µî·Ï
     public void register(BoardVO board);
-    // ê²Œì‹œê¸€ 1ê°œ ì½ê¸°
+    // °Ô½Ã±Û 1°³ Á¶È¸
     public BoardVO get(Long bno);
-    // ê²Œì‹œê¸€ ìˆ˜ì •
+    // °Ô½Ã±Û ¼öÁ¤
     public boolean modify(BoardVO board);
-    // ê²Œì‹œê¸€ ì‚­ì œ
+    // °Ô½Ã±Û »èÁ¦
     public boolean remove(Long bno);
-    // ê²Œì‹œê¸€ ëª©ë¡
-    public List<BoardVO> getList();
+    // °Ô½Ã±Û ¸ñ·Ï Á¶È¸
+    // public List<BoardVO> getList();
+    // ÆäÀÌÂ¡ Ã³¸®µÈ °Ô½Ã±Û ¸ñ·Ï Á¶È¸
+    public List<BoardVO> getList(Criteria cri);
+    
 }

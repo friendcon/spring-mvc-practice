@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import com.springmvc.domain.BoardVO;
+import com.springmvc.domain.Criteria;
 import com.springmvc.mapper.BoardMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -42,9 +43,15 @@ public class BoardServiceImpl implements BoardService {
         return mapper.delete(bno) == 1;
     }
 
-    @Override
+    /*@Override
     public List<BoardVO> getList() {
         log.info("get List. . . . . .");
         return mapper.getList();
-    }
+    }*/
+
+	@Override
+	public List<BoardVO> getList(Criteria cri) {
+		log.info("get List with Paging. . . . . ." + cri);
+		return mapper.getListWithPaging(cri);
+	}
 }

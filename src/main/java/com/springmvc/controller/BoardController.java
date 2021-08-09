@@ -20,12 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
     private BoardService service;
 
+    // 목록 페이지
     @GetMapping("/list")
     public void list(Model model){
         log.info("list page. . . . . .");
         model.addAttribute("list", service.getList());
     }
 
+    // 등록 페이지
     @GetMapping("/register")
     public void register() {
     	
@@ -40,9 +42,10 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping("/get")
+    // 조회페이지 & 수정페이지
+    @GetMapping({"/get", "/modify"})
     public void get(@RequestParam("bno") Long bno, Model model){
-        log.info("/get");
+        log.info("/get or /modify");
         model.addAttribute("board", service.get(bno));
     }
  
@@ -52,7 +55,7 @@ public class BoardController {
         if(service.modify(board)){
             rttr.addFlashAttribute("result", "success");
         }
-        return "redirect:/board/list";
+        return "redirect:/board/list"; 
     }
 
     @PostMapping("/remove")

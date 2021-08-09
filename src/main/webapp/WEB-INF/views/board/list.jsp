@@ -8,9 +8,12 @@
         	$(document).ready(function(){
         		var result = '${result}';
         		checkModal(result);
+        	
+        		// 뒤로가기를 했을 때 반복되지 않게 하기위함!
+        		history.replaceState({}, null, null);
         		
         		function checkModal(result) {
-        			if(result === '') {
+        			if(result === '' || history.state) {
         				return;
         			}
         			if(parseInt(result) > 0) {
@@ -54,10 +57,10 @@
                     			<c:forEach items="${list }" var="board">
                     				<tr>
                     					<td>${board.bno }</td>
-                    					<td>${board.title }</td>
+                    					<td><a href='/board/get?bno=${board.bno }'>${board.title }</a></td>
                     					<td>${board.writer }</td>
-                    					<td>${board.regdate }</td>
-                    					<td>${board.bno }</td>
+                    					<td>${board.regdate }</td><%-- 
+                    					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate }"/></td> --%>
                     				</tr>
                     			</c:forEach>
                     		</table>

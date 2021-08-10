@@ -18,5 +18,7 @@ public interface BoardService {
     // public List<BoardVO> getList();
     // 페이징 처리된 게시글 목록 조회
     public List<BoardVO> getList(Criteria cri);
+    // 전체 게시글수
+    public int getTotal(Criteria cri);
     
 }

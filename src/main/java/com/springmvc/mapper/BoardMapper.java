@@ -29,4 +29,7 @@ public interface BoardMapper {
 
     // 수정
     public int update(BoardVO board);
+    
+    // 전체 게시글 수 
+    public int getTotalCount(Criteria cri);
 }

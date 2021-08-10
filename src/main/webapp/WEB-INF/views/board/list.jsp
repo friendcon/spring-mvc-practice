@@ -25,6 +25,26 @@
         		$("#regBtn").on("click", function(){
         			self.location = "/board/register";
         		});
+        		
+        		var actionForm = $("#actionForm");
+        		// 페이지 넘버 버튼 클릭시 
+        		$(".paginate_button a").on("click", function(e){
+        			e.preventDefault(); 
+        			console.log("click");
+        			// input 태그의 name이 pageNum value를 찾아서 a태그의 href값으로 변경한다. 
+        			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+        			// actionForm을 제출한다.
+        			actionForm.submit();
+        		});
+        		
+        		// 게시글 제목 클릭시 액션 폼
+        		$(".move").on("click", function(e){
+        			e.preventDefault();
+        			// 액션폼에 hidden으로 name은 bno고 value 역시 bno인 태그를 추가한다
+        			actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");
+        			actionForm.attr("action", "/board/get");
+        			actionForm.submit();
+        		});
         	});
         </script>
         
@@ -57,13 +77,27 @@
                     			<c:forEach items="${list }" var="board">
                     				<tr>
                     					<td>${board.bno }</td>
-                    					<td><a href='/board/get?bno=${board.bno }'>${board.title }</a></td>
+                    					<%-- <td><a href='/board/get?bno=${board.bno }'>${board.title }</a></td> --%>
+                    					<td><a class="move" href='${board.bno }'>${board.title }</a></td>
                     					<td>${board.writer }</td>
                     					<td>${board.regdate }</td><%-- 
                     					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate }"/></td> --%>
                     				</tr>
                     			</c:forEach>
                     		</table>
+                    		<div class="pull-right">
+                    			<ul class="pagination">
+                    				<c:if test="${pageMaker.prev }">
+                    					<li class="paginate_button previous"><a href="${pageMaker.startPage -1 }">Previous</a></li>
+                    				</c:if>
+                    				<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+                    					<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active" : "" }"><a href="${num }">${num }</a></li>
+                    				</c:forEach>
+                    				<c:if test="${pageMaker.next }">
+                    					<li class="paginate_button next"><a href="${pageMaker.endPage + 1 }">NEXT</a></li>
+                    				</c:if>
+                    			</ul>
+                    		</div>
                     		
                     		<!-- Modal 추가-->
 			                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -89,6 +123,9 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            
+            <form id="actionForm" action="/board/list" method="get">
+            	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+            	<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+            </form>
         <%@include file="../includes/footer.jsp"%>
         

@@ -19,7 +19,11 @@
 			} else if(operation === 'list') {
 				formObj.attr("action", "/board/list").attr("method", "get");
 				// /board/list는 파라미터가 없기 때문에 비워둔 상태에서 제출되어야 한다
+				var pageNumTag = $("input[name='pageNum']").clone();
+				var amountTag = $("input[name='amount']").clone();
 				formObj.empty();
+				formObj.append(pageNumTag);
+				formObj.append(amountTag);
 			}
 			formObj.submit();
 		});
@@ -73,6 +77,10 @@
                     			<button type="submit" data-oper="modify" class="btn btn-default">Modify</button>
                     			<button type="submit" data-oper="remove" class="btn btn-danger">Remove</button>
                     			<button type="submit" data-oper="list" class="btn btn-info">List</button>
+                    			
+                    			<!-- 수정페이지에도 목록으로 가기가 있어서 hidden으로 pageNum과 amount를 넘겨줘야한다. -->
+                    			<input type="hidden" name="pageNum" value="${cri.pageNum }">
+                    			<input type="hidden" name="amount" value="${cri.amount }">
                     		</form>
                     	</div>
                     </div>

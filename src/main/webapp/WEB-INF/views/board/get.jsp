@@ -6,7 +6,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		// form 객체를 가져온다
-		var openForm = $("#operForm");
+		var operForm = $("#operForm");
 		// 수정버튼 클릭시 /board/modify 로 이동하도록 한다
 		$("button[data-oper='modify']").on("click", function(e){
 			operForm.attr("action", "/board/modify").submit();
@@ -57,8 +57,10 @@
                     			<button data-oper="list" class="btn btn-info"
                     			onclick="location.href='/board/list'">List</button>
                     			
-                    			<form id="openForm" action="/board/modify" method="get">
+                    			<form id="operForm" action="/board/modify" method="get">
                     				<input type="hidden" id="bno" name="bno" value="${board.bno }" />
+                    				<input type="hidden" name="pageNum" value="${cri.pageNum }" />
+                    				<input type="hidden" name="amount" value="${cri.amount }" />
                     			</form>
                     	</div>
                     </div>

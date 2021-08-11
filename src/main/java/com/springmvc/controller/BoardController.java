@@ -37,7 +37,7 @@ public class BoardController {
     	//model.addAttribute("pageMaker", new PageDTO(cri, 123));
     	int total = service.getTotal(cri);
     	log.info("total : " + total);
-    	model.addAttribute("pageMaker", new PageDTO(cri, 123));
+    	model.addAttribute("pageMaker", new PageDTO(cri, total));
     }
 
     // 등록 페이지
@@ -69,8 +69,14 @@ public class BoardController {
         if(service.modify(board)){
             rttr.addFlashAttribute("result", "success");
         }
+        // 목록으로 이동할때 키워드, 타입도 가지고가야한다
+        /*
+         * 4줄 코드를 줄이기 위해서 Criteria에 UriComponentsBuilders를 이용해서 URL을 만들어주면 된다.  P349
+         */
         rttr.addAttribute("pageNum", cri.getPageNum());
         rttr.addAttribute("amount", cri.getAmount());
+        rttr.addAttribute("type", cri.getType());
+        rttr.addAttribute("keyword", cri.getKeyword());
         return "redirect:/board/list"; 
     }
 
@@ -82,6 +88,8 @@ public class BoardController {
         }
         rttr.addAttribute("pageNum", cri.getPageNum());
         rttr.addAttribute("amount", cri.getAmount());
+        rttr.addAttribute("type", cri.getType());
+        rttr.addAttribute("keyword", cri.getKeyword());
         return "redirect:/board/list";
     }
 }

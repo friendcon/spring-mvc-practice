@@ -5,27 +5,27 @@
 <%@ include file="../includes/header.jsp" %>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 <script>
-	console.log("=============");
+	/* console.log("=============");
 	console.log("JS TEST");
 	
 	var bnoValue = '${board.bno}';
-	
+	 */
 	// add(reply객체, callback 함수, err) 
-	replyService.add(
+	/* replyService.add(
 		{reply:"JS TEST", replyer:"tester", bno:bnoValue}
 		, 
 		function(result){
 			alert("RESULT : " + result);
 		}
-	);
+	); */
 	
 	// 댓글 리스트 가져오기
 	// getList(param, callback, err)
-	replyService.getList({bno:bnoValue, page:1}, function(list) {
+	/* replyService.getList({bno:bnoValue, page:1}, function(list) {
 		for(var i=0, len = list.length||0; i<len; i++){
 			console.log(list[i]);
 		}
-	});
+	}); */
 	
 	// 댓글 삭제 테스트 
 	/* replyService.remove(9, function(count) {
@@ -38,7 +38,7 @@
 	});
 	 */
 	// 댓글 수정 테스트
-	replyService.update({
+/* 	replyService.update({
 		rno:13,
 		bno:bnoValue,
 		reply:"Modified Reply. . . ."
@@ -48,7 +48,51 @@
 	 
 	 replyService.get(10, function(data){
 		 console.log(data);
-	 });
+	 }); */
+</script>
+<script>
+// 게시글 조회와 동시에 댓글 목록 조회도 가능해야한다. 
+	$(document).ready(function(){
+		var bnoValue = ${board.bno};
+		var replyUL = $('.chat');
+		
+		showList(1);
+		function showList(page) {
+			replyService.getList({bno:bnoValue, page: page || 1}, function(list) {
+				var str ="";
+				if(list == null || list.length == 0){
+					replyUL.html("");
+					return;
+				}
+				
+				for(var i=0, len = list.length || 0; i<len; i++){
+					str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
+					str += "<div><div class='header'><strong class='primary-font'>" + list[i].replyer+"</strong>";
+					str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small></div>";
+					str += "<p>" + list[i].reply + "</p></div></li>";
+				}
+				
+				replyUL.html(str);
+			}); // end showList function 
+		}
+		
+		var modal = $(".modal");
+		var modalInputReply = modal.find("input[name='reply']"); // 댓글
+		var modalInputReplyer = modal.find("input[name='replyer']"); // 댓글작성자
+		var modalInputReplyDate = modal.find("input[name='replyDate']"); // 댓글작성날짜
+		
+		var modalModBtn = $("#modalModBtn"); // modify 버튼
+		var modalRemoveBtn = $("#modalRemoveBtn"); // remove 버튼
+		var modalRegisterBtn = $("#modalRegisterBtn"); // register 버튼
+		
+		$("#addReplyBtn").on("click", function(e){
+			modal.find("input").val(""); // 모달에 있는 input 값들 초기화 
+			modalInputReplyDate.closest("div").hide(); // 댓글단 날짜를 숨겨야한다
+			modal.find("button[id != 'modalCloseBtn']").hide(); // 숨김
+			modalRegisterBtn.show(); // 등록버튼 보여줌
+			$(".modal").modal("show"); // 모달 보여줌
+		});
+	});
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -117,5 +161,61 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+            <div class="row">
+            	<div class="col-lg-12">
+            		<div class="panel panel-default">
+            			<div class="panel-heading">
+            				<i class="fa fa-comments fa-fw"></i> Reply
+            				<!-- 댓글 추가 -->
+            				<button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">New Reply</button>
+            			</div>
+            			<div class="panel-body">
+            				<ul class="chat">
+            				</ul>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            
+            <!-- Modal 추가-->
+			                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			                    <div class="modal-dialog">
+			                        <div class="modal-content">
+			                            <div class="modal-header">
+			                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                                <h4 class="modal-title" id="myModalLabel">Reply Modal</h4>
+			                            </div>
+			                            <div class="modal-body">
+											<div class="form-group">
+												<label>Reply</label>
+												<input class="form-control" name="reply" value="New Reply~!!!">
+											</div>
+											<div class="form-group">
+												<label>Replyer</label>
+												<input class="form-control" name="replyer" value="replyer">
+											</div>
+											<div class="form-group">
+												<label>Reply Date</label>
+												<input class="form-control" name="replyDate" value=''>
+											</div>
+										</div>
+			                            <div class="modal-footer">
+			                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			                                <button type="button" class="btn btn-primary">Save changes</button>
+			                            </div>
+			                        </div>
+			                  
+			                        <!-- /.modal-content -->
+			                        <div class="modal-footer">
+			                        	<button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
+			                        	<button id="modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
+			                        	<button id="modalRegisterBtn" type="button" class="btn btn-default"
+			                        	data-dismiss="modal">Register</button>
+			                        	<button id="modalCloseBtn" type="button" class="btn btn-default"
+			                        	data-dismiss="modal">Close</button>
+			                        </div>
+			                    </div>
+			                    <!-- /.modal-dialog -->
+			                </div>
             
             <%@include file="../includes/footer.jsp"%>

@@ -3,6 +3,53 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="../includes/header.jsp" %>
+<script type="text/javascript" src="/resources/js/reply.js"></script>
+<script>
+	console.log("=============");
+	console.log("JS TEST");
+	
+	var bnoValue = '${board.bno}';
+	
+	// add(reply객체, callback 함수, err) 
+	replyService.add(
+		{reply:"JS TEST", replyer:"tester", bno:bnoValue}
+		, 
+		function(result){
+			alert("RESULT : " + result);
+		}
+	);
+	
+	// 댓글 리스트 가져오기
+	// getList(param, callback, err)
+	replyService.getList({bno:bnoValue, page:1}, function(list) {
+		for(var i=0, len = list.length||0; i<len; i++){
+			console.log(list[i]);
+		}
+	});
+	
+	// 댓글 삭제 테스트 
+	/* replyService.remove(9, function(count) {
+		console.log(count);
+		if(count === "success") {
+			alert("REMOVED");
+		}
+	}, function(err) {
+		alert("Error. . .");
+	});
+	 */
+	// 댓글 수정 테스트
+	replyService.update({
+		rno:13,
+		bno:bnoValue,
+		reply:"Modified Reply. . . ."
+	}, function(result){
+		alert("수정완료. . .");
+	});
+	 
+	 replyService.get(10, function(data){
+		 console.log(data);
+	 });
+</script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		// form 객체를 가져온다

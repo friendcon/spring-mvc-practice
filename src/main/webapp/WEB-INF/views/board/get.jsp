@@ -115,6 +115,7 @@
 			var rno = $(this).data("rno");
 			console.log(rno);
 			replyService.get(rno, function(reply){
+				console.log("chat");
 				modalInputReply.val(reply.reply);
 				modalInputReplyer.val(reply.replyer);
 				modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");

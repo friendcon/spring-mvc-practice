@@ -57,7 +57,7 @@ public class ReplyController {
 	}
 	
 	// ´ñ±Û ¼öÁ¤
-	@GetMapping(value = "/rno", 
+	@GetMapping(value = "/{rno}", 
 			produces = {
 					MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_UTF8_VALUE

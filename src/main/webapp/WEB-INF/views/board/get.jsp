@@ -85,12 +85,69 @@
 		var modalRemoveBtn = $("#modalRemoveBtn"); // remove 버튼
 		var modalRegisterBtn = $("#modalRegisterBtn"); // register 버튼
 		
+		// 댓글 작성 버튼 클릭시 이벤트 처리
 		$("#addReplyBtn").on("click", function(e){
 			modal.find("input").val(""); // 모달에 있는 input 값들 초기화 
 			modalInputReplyDate.closest("div").hide(); // 댓글단 날짜를 숨겨야한다
 			modal.find("button[id != 'modalCloseBtn']").hide(); // 숨김
 			modalRegisterBtn.show(); // 등록버튼 보여줌
 			$(".modal").modal("show"); // 모달 보여줌
+		});
+		
+		// 등록 버튼 클릭시 이벤트 처리
+		modalRegisterBtn.on("click", function(e){
+			var reply = {
+					reply: modalInputReply.val(),
+					replyer: modalInputReplyer.val(),
+					bno: bnoValue
+			};
+			
+			replyService.add(reply, function(result) {
+				alert(result); // result는 서버에서 가져온 값
+				modal.find("input").val(""); // modal 의 input 값 전부 삭제 
+				modal.modal("hide"); // 모달창 숨기기
+				showList(1);
+			})
+		})
+		
+		// 댓글 한개 클릭시 이벤트 처리
+		$(".chat").on("click", "li", function(e){
+			var rno = $(this).data("rno");
+			console.log(rno);
+			replyService.get(rno, function(reply){
+				modalInputReply.val(reply.reply);
+				modalInputReplyer.val(reply.replyer);
+				modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
+				modal.data("rno", reply.rno);
+				modal.find("button[id != 'modalCloseBtn']").hide(); // modal에서 닫기버튼을 제외한 것을 숨긴다.
+				modalModBtn.show();
+				modalRemoveBtn.show();
+				$(".modal").modal("show"); // 초기화 후 모달창을 보여준다
+			});
+		});
+		
+		// 변경버튼 클릭시 이벤트 처리
+		modalModBtn.on("click", function(e){
+			// 댓글 객체 가져오기
+			var reply = {
+					rno:modal.data("rno"),
+					reply:modalInputReply.val()
+			};
+			replyService.update(reply, function(result){
+				alert(result);
+				modal.modal("hide");
+				showList(1);
+			});
+		});
+		
+		// 삭제버튼 클릭시 이벤트 처리
+		modalRemoveBtn.on("click", function(e){
+			var rno = modal.data("rno");
+			replyService.remove(rno, function(result) {
+				alert(result);
+				modal.modal("hide");
+				showList(1);
+			});
 		});
 	});
 </script>

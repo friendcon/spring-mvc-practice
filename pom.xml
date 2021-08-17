@@ -42,7 +42,14 @@
             <artifactId>aspectjrt</artifactId>
             <version>${org.aspectj-version}</version>
         </dependency>
-
+        
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>${org.aspectj-version}</version>
+		</dependency>
+        
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -178,6 +185,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        
 		<!-- 테스트시 java 인스턴스를 json 타입의 문자열로 직접 변환하기 위함  -->
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>

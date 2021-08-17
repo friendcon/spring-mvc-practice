@@ -23,7 +23,7 @@ public class BoardServiceTest {
     private BoardService service;
 
     // testExist() : service 객체가 잘 주입되었는지 확인
-    @Test
+    /*@Test
     public void testExist() {
         log.info(service);
         assertNotNull(service);
@@ -39,10 +39,10 @@ public class BoardServiceTest {
         log.info("생성된 게시물의 번호 : " + board.getBno());
     }
 
-    /*@Test
+    @Test
     public void testGetList(){
         service.getList().forEach(board -> log.info(board));
-    }*/
+    }
 
     @Test
     public void testGetListWithPaging() {
@@ -67,5 +67,17 @@ public class BoardServiceTest {
     @Test
     public void testDelete(){
         log.info("remove result. . . . . ." + service.remove(4L));
+    }*/
+    
+    @Test
+    public void testClass(){
+    	log.info(service);
+    	log.info(service.getClass().getName());
+    	BoardVO board = new BoardVO();
+    	board.setTitle("<script>");
+    	board.setContent("aop를 테스트하자");
+    	board.setWriter("aop");
+    	service.register(board);
     }
+    
 }

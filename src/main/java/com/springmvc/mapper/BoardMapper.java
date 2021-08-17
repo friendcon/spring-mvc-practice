@@ -3,6 +3,7 @@ package com.springmvc.mapper;
 import com.springmvc.domain.BoardVO;
 import com.springmvc.domain.Criteria;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface BoardMapper {
     
     // 전체 게시글 수 
     public int getTotalCount(Criteria cri);
+    
+    // 댓글수 갱신
+    public void updateReplyCnt(@Param("bno") Long bno, @Param("amount") int amount);
 }

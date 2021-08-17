@@ -58,10 +58,21 @@
 		
 		showList(1);
 		function showList(page) {
-			replyService.getList({bno:bnoValue, page: page || 1}, function(list) {
+			console.log("show list " + page);
+			replyService.getList({bno:bnoValue, page: page || 1}, function(replyCnt, list) {
+				console.log("replyCnt: " + replyCnt);
+				console.log("list : " + list);
+				console.log(list);
+				
+				// 페이지번호가 -1이면 마지막페이지 호출
+				if(page == -1){
+					pageNum = Math.ceil(replyCnt/10.0);	
+					showList(pageNum);
+					return;
+				}
+				
 				var str ="";
 				if(list == null || list.length == 0){
-					replyUL.html("");
 					return;
 				}
 				
@@ -73,7 +84,46 @@
 				}
 				
 				replyUL.html(str);
+				
+				showReplyPage(replyCnt);
 			}); // end showList function 
+		}
+		
+		var pageNum = 1;
+		var replyPageFooter = $(".panel-footer");
+		
+		function showReplyPage(replyCnt) {
+			var endNum = Math.ceil(pageNum/10.0) * 10;
+			var startNum = endNum - 9;
+			var prev = startNum != 1;
+			var next = false;
+			
+			if(endNum * 10 >= replyCnt) {
+				endNum = Math.ceil(replyCnt/10.0);
+			}
+			
+			if(endNum * 10 < replyCnt) {
+				next = true;
+			}
+			
+			var str = "<ul class='pagination pull-right'>";
+			
+			if(prev) {
+				str += "<li class='page-item'><a class='page-link' href='"+(startNum - 1)+"'>Previous</a></li>";
+			}
+			
+			for(var i = startNum; i <= endNum; i++){
+				var active = pageNum == i?"active":"";
+				str += "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+			}
+			
+			if(next) {
+				str += "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+			}
+			
+			str += "</ul></div>";
+			console.log(str);
+			replyPageFooter.html(str);
 		}
 		
 		var modal = $(".modal");
@@ -106,7 +156,8 @@
 				alert(result); // result는 서버에서 가져온 값
 				modal.find("input").val(""); // modal 의 input 값 전부 삭제 
 				modal.modal("hide"); // 모달창 숨기기
-				showList(1);
+				//showList(1);
+				showList(-1); // 댓글 등록하면 끝에부터 보여줘야한다
 			})
 		})
 		
@@ -137,7 +188,7 @@
 			replyService.update(reply, function(result){
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
 		});
 		
@@ -147,8 +198,18 @@
 			replyService.remove(rno, function(result) {
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			});
+		});
+		
+		// 댓글 페이지 번호 클릭
+		replyPageFooter.on("click", "li a", function(e){
+			e.preventDefault();
+			console.log("page click");
+			var targetPageNum = $(this).attr("href");
+			console.log("targetPageNum : " + targetPageNum);
+			pageNum = targetPageNum;
+			showList(pageNum);
 		});
 	});
 </script>
@@ -230,6 +291,9 @@
             			<div class="panel-body">
             				<ul class="chat">
             				</ul>
+            			</div>
+            			<div class="panel-footer">
+            				
             			</div>
             		</div>
             	</div>

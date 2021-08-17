@@ -14,4 +14,5 @@ public interface ReplyMapper {
 	public int update(ReplyVO vo);
 	// 파라미터가 2개 이상일 경우 @Param을 사용한다
 	public List<ReplyVO> getListWithPaging(@Param("cri") Criteria cri, @Param("bno") Long bno);
+	public int getCountByBno(Long bno); // 댓글수
 }

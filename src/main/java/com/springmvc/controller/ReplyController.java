@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springmvc.domain.Criteria;
+import com.springmvc.domain.ReplyPageDTO;
 import com.springmvc.domain.ReplyVO;
 import com.springmvc.service.ReplyService;
 
@@ -47,13 +48,13 @@ public class ReplyController {
 			MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 	})
-	public ResponseEntity<List<ReplyVO>> getList(
+	public ResponseEntity<ReplyPageDTO> getList(
 			@PathVariable("page") int page,
 			@PathVariable("bno") Long bno) {
 		log.info("getList. . . . . . . ");
 		Criteria cri = new Criteria(page, 10);
 		log.info(cri);
-		return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<>(service.getListPage(cri, bno), HttpStatus.OK);
 	}
 	
 	// ´ñ±Û ¼öÁ¤
